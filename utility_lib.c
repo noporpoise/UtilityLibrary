@@ -30,7 +30,7 @@
 /* Utility functions */
 long parse_int(char* c, char* err)
 {
-  // atoi less dependable that newer strtol (it has no error response!)
+  // atoi less dependable than newer strtol (it has no error response!)
   char* strtol_last_char_ptr = c;
   long value = strtol(c, &strtol_last_char_ptr, 10);
   
@@ -44,15 +44,49 @@ long parse_int(char* c, char* err)
   return value;
 }
 
-char parse_entire_int(char *str, int *result)
+/* parse entire integer */
+
+char parse_entire_long(char *str, long *result)
 {
-  int len = strlen(str);
+  size_t len = strlen(str);
 
   char *strtol_last_char_ptr = str;
   *result = strtol(str, &strtol_last_char_ptr, 10);
 
   return (strtol_last_char_ptr == str+len);
 }
+
+char parse_entire_ulong(char *str, unsigned long *result)
+{
+  size_t len = strlen(str);
+
+  char *strtol_last_char_ptr = str;
+  *result = strtoul(str, &strtol_last_char_ptr, 10);
+
+  return (strtol_last_char_ptr == str+len);
+}
+
+char parse_entire_longlong(char *str, long long *result)
+{
+  size_t len = strlen(str);
+
+  char *strtol_last_char_ptr = str;
+  *result = strtoll(str, &strtol_last_char_ptr, 10);
+
+  return (strtol_last_char_ptr == str+len);
+}
+
+char parse_entire_ulonglong(char *str, unsigned long long *result)
+{
+  size_t len = strlen(str);
+
+  char *strtol_last_char_ptr = str;
+  *result = strtoull(str, &strtol_last_char_ptr, 10);
+
+  return (strtol_last_char_ptr == str+len);
+}
+
+// Compare integers
 
 int int_cmp(const void *aa, const void *bb)
 {
@@ -139,4 +173,18 @@ char* next_nonwhitespace(char* s)
   }
 
   return NULL;
+}
+
+long count_strchr(const char* str, const int c)
+{
+  int count = 0;
+  const char *tmp = str;
+
+  while((tmp = strchr(tmp,c)) != NULL)
+  {
+    tmp++;
+    count++;
+  }
+
+  return count;
 }

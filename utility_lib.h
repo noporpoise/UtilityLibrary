@@ -21,18 +21,33 @@
 #ifndef UTILITY_HEADER_SEEN
 #define UTILITY_HEADER_SEEN
 
+//
+// Integers
+//
+
 // parse an int value - exit with some error message if invalid value
 long parse_int(char* c, char* err);
 
 // Returns 1 if whole string is int, 0 otherwise
-char parse_entire_int(char *str, int *result);
+char parse_entire_long(char *str, long *result);
+char parse_entire_ulong(char *str, unsigned long *result);
+char parse_entire_longlong(char *str, long long *result);
+char parse_entire_ulonglong(char *str, unsigned long long *result);
 
 // Sort comparison function on int
 int int_cmp(const void *aa, const void *bb);
 
+//
+// Binary
+//
+
 // Convert an int/long to a string of zeros and ones
 char* int_to_binary(int x);
 char* long_to_binary(long x);
+
+//
+// Strings
+//
 
 // Checks if anything is piping in
 int stdin_is_ready();
@@ -40,5 +55,7 @@ int stdin_is_ready();
 char string_is_all_whitespace(char* s);
 
 char* next_nonwhitespace(char* s);
+
+long count_strchr(const char* str, const int c);
 
 #endif
