@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h> // isspace
+#include <limits.h> // UINT_MAX etc.
 
 #include <sys/select.h> // used in stdin_is_ready()
 
@@ -46,14 +47,58 @@ long parse_int(char* c, char* err)
 
 /* parse entire integer */
 
+char parse_entire_int(char *str, int *result)
+{
+  size_t len = strlen(str);
+
+  char *strtol_last_char_ptr = str;
+  long tmp = strtol(str, &strtol_last_char_ptr, 10);
+
+  if(tmp > INT_MAX || tmp < INT_MIN || strtol_last_char_ptr != str+len)
+  {
+    return 0;
+  }
+  else
+  {
+    *result = (int)tmp;
+    return 1;
+  }
+}
+
+char parse_entire_uint(char *str, unsigned int *result)
+{
+  size_t len = strlen(str);
+
+  char *strtol_last_char_ptr = str;
+  unsigned long tmp = strtoul(str, &strtol_last_char_ptr, 10);
+
+  if(tmp > UINT_MAX || strtol_last_char_ptr != str+len)
+  {
+    return 0;
+  }
+  else
+  {
+    *result = (unsigned int)tmp;
+    return 1;
+  }
+}
+
 char parse_entire_long(char *str, long *result)
 {
   size_t len = strlen(str);
 
   char *strtol_last_char_ptr = str;
-  *result = strtol(str, &strtol_last_char_ptr, 10);
+  long tmp = strtol(str, &strtol_last_char_ptr, 10);
 
-  return (strtol_last_char_ptr == str+len);
+  if(strtol_last_char_ptr == str+len)
+  {
+    *result = tmp;
+    return 1;
+  }
+  else
+  {
+    return 0;
+  }
 }
 
 char parse_entire_ulong(char *str, unsigned long *result)
@@ -61,9 +106,17 @@ char parse_entire_ulong(char *str, unsigned long *result)
   size_t len = strlen(str);
 
   char *strtol_last_char_ptr = str;
-  *result = strtoul(str, &strtol_last_char_ptr, 10);
+  unsigned long tmp = strtoul(str, &strtol_last_char_ptr, 10);
 
-  return (strtol_last_char_ptr == str+len);
+  if(strtol_last_char_ptr == str+len)
+  {
+    *result = tmp;
+    return 1;
+  }
+  else
+  {
+    return 0;
+  }
 }
 
 char parse_entire_longlong(char *str, long long *result)
@@ -71,9 +124,17 @@ char parse_entire_longlong(char *str, long long *result)
   size_t len = strlen(str);
 
   char *strtol_last_char_ptr = str;
-  *result = strtoll(str, &strtol_last_char_ptr, 10);
+  long long tmp = strtoll(str, &strtol_last_char_ptr, 10);
 
-  return (strtol_last_char_ptr == str+len);
+  if(strtol_last_char_ptr == str+len)
+  {
+    *result = tmp;
+    return 1;
+  }
+  else
+  {
+    return 0;
+  }
 }
 
 char parse_entire_ulonglong(char *str, unsigned long long *result)
@@ -81,9 +142,17 @@ char parse_entire_ulonglong(char *str, unsigned long long *result)
   size_t len = strlen(str);
 
   char *strtol_last_char_ptr = str;
-  *result = strtoull(str, &strtol_last_char_ptr, 10);
+  unsigned long long tmp = strtoull(str, &strtol_last_char_ptr, 10);
 
-  return (strtol_last_char_ptr == str+len);
+  if(strtol_last_char_ptr == str+len)
+  {
+    *result = tmp;
+    return 1;
+  }
+  else
+  {
+    return 0;
+  }
 }
 
 // Compare integers

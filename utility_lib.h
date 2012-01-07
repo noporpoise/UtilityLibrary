@@ -29,6 +29,8 @@
 long parse_int(char* c, char* err);
 
 // Returns 1 if whole string is int, 0 otherwise
+char parse_entire_int(char *str, int *result);
+char parse_entire_uint(char *str, unsigned int *result);
 char parse_entire_long(char *str, long *result);
 char parse_entire_ulong(char *str, unsigned long *result);
 char parse_entire_longlong(char *str, long long *result);
