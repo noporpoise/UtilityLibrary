@@ -20,19 +20,29 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "utility_lib.h"
+
+void test_trim(const char* str)
+{
+  size_t len = strlen(str);
+  char* str_cpy = (char*) malloc(len+1);
+  strncpy(str_cpy, str, len);
+  printf("trim('%s'): '%s'\n", str, trim(str_cpy));
+}
 
 int main(int argc, char* argv[])
 {
   printf("Oh hi!\n");
   
-  printf("string_is_all_whitespace():\n");
-  
-  char* t = "  \tasdf";
-  printf("'%s': %i\n", t, string_is_all_whitespace(t));
+  char* str = "  \tasdf";
+  printf("string_is_all_whitespace('%s'): %i\n", str, string_is_all_whitespace(str));
+  str = "  \t ";
+  printf("string_is_all_whitespace('%s'): %i\n", str, string_is_all_whitespace(str));
 
-  t = "  \t ";
-  printf("'%s': %i\n", t, string_is_all_whitespace(t));
+  test_trim("  \t asdf asdf \n ");
+  test_trim("a");
+  test_trim("");
 
   return EXIT_SUCCESS;
 }

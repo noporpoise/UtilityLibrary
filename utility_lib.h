@@ -29,12 +29,12 @@
 long parse_int(char* c, char* err);
 
 // Returns 1 if whole string is int, 0 otherwise
-char parse_entire_int(char *str, int *result);
-char parse_entire_uint(char *str, unsigned int *result);
-char parse_entire_long(char *str, long *result);
-char parse_entire_ulong(char *str, unsigned long *result);
-char parse_entire_longlong(char *str, long long *result);
-char parse_entire_ulonglong(char *str, unsigned long long *result);
+char parse_entire_int(const char *str, int *result);
+char parse_entire_uint(const char *str, unsigned int *result);
+char parse_entire_long(const char *str, long *result);
+char parse_entire_ulong(const char *str, unsigned long *result);
+char parse_entire_longlong(const char *str, long long *result);
+char parse_entire_ulonglong(const char *str, unsigned long long *result);
 
 // Sort comparison function on int
 int int_cmp(const void *aa, const void *bb);
@@ -44,8 +44,8 @@ int int_cmp(const void *aa, const void *bb);
 //
 
 // Convert an int/long to a string of zeros and ones
-char* int_to_binary(int x);
-char* long_to_binary(long x);
+char* int_to_binary(const int x);
+char* long_to_binary(const long x);
 
 //
 // Strings
@@ -54,9 +54,13 @@ char* long_to_binary(long x);
 // Checks if anything is piping in
 int stdin_is_ready();
 
-char string_is_all_whitespace(char* s);
+char string_is_all_whitespace(const char* s);
 
-char* next_nonwhitespace(char* s);
+char* next_nonwhitespace(const char* s);
+
+// Move pointer to first nonwhitespace position
+// Remove trailing whitespace characters (trim with '\0')
+char* trim(char* str);
 
 long count_strchr(const char* str, const int c);
 

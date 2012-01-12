@@ -47,11 +47,11 @@ long parse_int(char* c, char* err)
 
 /* parse entire integer */
 
-char parse_entire_int(char *str, int *result)
+char parse_entire_int(const char *str, int *result)
 {
   size_t len = strlen(str);
 
-  char *strtol_last_char_ptr = str;
+  char *strtol_last_char_ptr = (char*)str;
   long tmp = strtol(str, &strtol_last_char_ptr, 10);
 
   if(tmp > INT_MAX || tmp < INT_MIN || strtol_last_char_ptr != str+len)
@@ -65,11 +65,11 @@ char parse_entire_int(char *str, int *result)
   }
 }
 
-char parse_entire_uint(char *str, unsigned int *result)
+char parse_entire_uint(const char *str, unsigned int *result)
 {
   size_t len = strlen(str);
 
-  char *strtol_last_char_ptr = str;
+  char *strtol_last_char_ptr = (char*)str;
   unsigned long tmp = strtoul(str, &strtol_last_char_ptr, 10);
 
   if(tmp > UINT_MAX || strtol_last_char_ptr != str+len)
@@ -83,11 +83,11 @@ char parse_entire_uint(char *str, unsigned int *result)
   }
 }
 
-char parse_entire_long(char *str, long *result)
+char parse_entire_long(const char *str, long *result)
 {
   size_t len = strlen(str);
 
-  char *strtol_last_char_ptr = str;
+  char *strtol_last_char_ptr = (char*)str;
   long tmp = strtol(str, &strtol_last_char_ptr, 10);
 
   if(strtol_last_char_ptr == str+len)
@@ -101,11 +101,11 @@ char parse_entire_long(char *str, long *result)
   }
 }
 
-char parse_entire_ulong(char *str, unsigned long *result)
+char parse_entire_ulong(const char *str, unsigned long *result)
 {
   size_t len = strlen(str);
 
-  char *strtol_last_char_ptr = str;
+  char *strtol_last_char_ptr = (char*)str;
   unsigned long tmp = strtoul(str, &strtol_last_char_ptr, 10);
 
   if(strtol_last_char_ptr == str+len)
@@ -119,11 +119,11 @@ char parse_entire_ulong(char *str, unsigned long *result)
   }
 }
 
-char parse_entire_longlong(char *str, long long *result)
+char parse_entire_longlong(const char *str, long long *result)
 {
   size_t len = strlen(str);
 
-  char *strtol_last_char_ptr = str;
+  char *strtol_last_char_ptr = (char*)str;
   long long tmp = strtoll(str, &strtol_last_char_ptr, 10);
 
   if(strtol_last_char_ptr == str+len)
@@ -137,11 +137,11 @@ char parse_entire_longlong(char *str, long long *result)
   }
 }
 
-char parse_entire_ulonglong(char *str, unsigned long long *result)
+char parse_entire_ulonglong(const char *str, unsigned long long *result)
 {
   size_t len = strlen(str);
 
-  char *strtol_last_char_ptr = str;
+  char *strtol_last_char_ptr = (char*)str;
   unsigned long long tmp = strtoull(str, &strtol_last_char_ptr, 10);
 
   if(strtol_last_char_ptr == str+len)
@@ -164,7 +164,7 @@ int int_cmp(const void *aa, const void *bb)
 }
 
 // Convert an int to a string of 0 or 1 characters
-char* int_to_binary(int x)
+char* int_to_binary(const int x)
 {
   char *b = (char*) malloc(sizeof(char)*(32+1));
   char *p = b;
@@ -182,7 +182,7 @@ char* int_to_binary(int x)
 }
 
 // Convert an long to a string of 0 or 1 characters
-char* long_to_binary(long x)
+char* long_to_binary(const long x)
 {
   char *b = (char*) malloc(sizeof(char)*(64+1));
   char *p = b;
@@ -214,7 +214,7 @@ int stdin_is_ready()
   return select(1, &fdset, NULL, NULL, &timeout) == 1 ? 1 : 0;
 }
 
-char string_is_all_whitespace(char* s)
+char string_is_all_whitespace(const char* s)
 {
   int i;
 
@@ -229,19 +229,38 @@ char string_is_all_whitespace(char* s)
   return 1;
 }
 
-char* next_nonwhitespace(char* s)
+char* next_nonwhitespace(const char* s)
 {
   while(*s != '\0')
   {
     if(!isspace(*s))
     {
-      return s;
+      return (char*)s;
     }
 
     s++;
   }
 
   return NULL;
+}
+
+char* trim(char* str)
+{
+  while(isspace(*str))
+  {
+    str++;
+  }
+
+  size_t len = strlen(str);
+
+  while(isspace(*(str+len-1)))
+  {
+    len--;
+  }
+
+  *(str+len) = '\0';
+
+  return str;
 }
 
 long count_strchr(const char* str, const int c)
