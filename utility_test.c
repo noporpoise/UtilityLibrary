@@ -18,31 +18,14 @@
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include "utility_lib.h"
+#include <stdlib.h> // EXIT_SUCCESS
+#include <stdio.h> // printf
 
-void test_trim(const char* str)
-{
-  size_t len = strlen(str);
-  char* str_cpy = (char*) malloc(len+1);
-  strncpy(str_cpy, str, len);
-  printf("trim('%s'): '%s'\n", str, trim(str_cpy));
-}
+#include "utility_lib.h"
 
 int main(int argc, char* argv[])
 {
   printf("Oh hi!\n");
-  
-  char* str = "  \tasdf";
-  printf("string_is_all_whitespace('%s'): %i\n", str, string_is_all_whitespace(str));
-  str = "  \t ";
-  printf("string_is_all_whitespace('%s'): %i\n", str, string_is_all_whitespace(str));
-
-  test_trim("  \t asdf asdf \n ");
-  test_trim("a");
-  test_trim("");
 
   return EXIT_SUCCESS;
 }
