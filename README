@@ -1,7 +1,12 @@
-Library code for general utility functions
+UtilityLib - C Library code for general utility functions
 
-Isaac Turner <turner.isaac@gmail.com>
- 
+ project: utility_lib
+ url: http://github.com/noporpoise/UtilityLibrary/
+ author: Isaac Turner <turner.isaac@gmail.com>
+ copyright (C) 28-May-2011
+ license: GPLv3
+
+
 == Build ==
 
 To build the test code:
@@ -9,7 +14,8 @@ To build the test code:
 $ make
 $ ./utility_test
 
-== Functions ==
+
+== How to Use ==
 
 To use in your code, include the following arguments in your gcc command:
  -I PATH/TO/UTILDIR/ PATH/TO/UTILDIR/utility_lib.c
@@ -18,7 +24,8 @@ and include in your source code:
 
 include "utility_lib.h"
 
-Functions available:
+
+== Functions ==
 
 //
 // Integers
