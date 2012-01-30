@@ -163,9 +163,21 @@ int cmp_int(const void *aa, const void *bb)
   return (*a < *b) ? -1 : (*a > *b);
 }
 
+int cmp_uint(const void *aa, const void *bb)
+{
+  const unsigned int *a = aa, *b = bb;
+  return (*a < *b) ? -1 : (*a > *b);
+}
+
 int cmp_long(const void *aa, const void *bb)
 {
   const long *a = aa, *b = bb;
+  return (*a < *b) ? -1 : (*a > *b);
+}
+
+int cmp_ulong(const void *aa, const void *bb)
+{
+  const unsigned long *a = aa, *b = bb;
   return (*a < *b) ? -1 : (*a > *b);
 }
 
@@ -205,6 +217,8 @@ char* long_to_binary(const long x)
   return b;
 }
 
+
+/* Input */
 
 // Checks if anything is piping in
 int stdin_is_ready()

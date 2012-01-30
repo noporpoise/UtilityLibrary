@@ -38,7 +38,9 @@ char parse_entire_ulonglong(const char *str, unsigned long long *result);
 
 // Sort comparison function on int
 int cmp_int(const void *aa, const void *bb);
+int cmp_uint(const void *aa, const void *bb);
 int cmp_long(const void *aa, const void *bb);
+int cmp_ulong(const void *aa, const void *bb);
 
 //
 // Binary
