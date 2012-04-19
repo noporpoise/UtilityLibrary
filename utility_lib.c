@@ -182,9 +182,8 @@ int cmp_ulong(const void *aa, const void *bb)
 }
 
 // Convert an int to a string of 0 or 1 characters
-char* int_to_binary(const int x)
+void int_to_binary(const int x, char b[33])
 {
-  char *b = (char*) malloc(sizeof(char)*(32+1));
   char *p = b;
 
   unsigned int z;
@@ -195,14 +194,11 @@ char* int_to_binary(const int x)
   }
 
   *p = '\0';
-
-  return b;
 }
 
 // Convert an long to a string of 0 or 1 characters
-char* long_to_binary(const long x)
+void long_to_binary(const long x, char b[66])
 {
-  char *b = (char*) malloc(sizeof(char)*(64+1));
   char *p = b;
 
   unsigned long z;
@@ -213,8 +209,6 @@ char* long_to_binary(const long x)
   }
 
   *p = '\0';
-
-  return b;
 }
 
 

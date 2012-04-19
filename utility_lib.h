@@ -47,8 +47,8 @@ int cmp_ulong(const void *aa, const void *bb);
 //
 
 // Convert an int/long to a string of zeros and ones
-char* int_to_binary(const int x);
-char* long_to_binary(const long x);
+void int_to_binary(const int x, char b[33]);
+void long_to_binary(const long x, char b[66]);
 
 //
 // Input
