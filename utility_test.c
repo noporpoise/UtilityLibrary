@@ -25,6 +25,17 @@
 
 int main(int argc, char* argv[])
 {
+  if(argc != 1)
+  {
+    int i;
+    printf("Unused arguments: %s", argv[1]);
+    for(i = 2; i < argc; i++) {
+      printf(", %s", argv[i]);
+    }
+    printf("\n");
+    exit(EXIT_FAILURE);
+  }
+
   printf("Oh hi!\n");
 
   return EXIT_SUCCESS;
