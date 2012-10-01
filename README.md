@@ -30,7 +30,7 @@ Functions
 Integers
 --------
 
-parse an int value - exit with some error message if invalid value
+Parse an integer value - exit with some error message `err` if `value` not a number.
 
     long parse_int(char* value, const char* err);
 
@@ -77,8 +77,8 @@ Data size units
 ---------------
 
 Result should be at least 8 chars long (including '\0')
-`bytes_to_str` adds \0 at end of string
-ulong_max bytes is 16 EB (Exabytes)
+ulong_max bytes is "16 EB" (Exabytes).
+Terminates string with a '\0'.
 
     void bytes_to_str(unsigned long num, char* result);
 
@@ -87,13 +87,13 @@ Binary
 
 Convert an int to a string of 0 or 1 characters
 `b` must be at least 33 characters long
-`int_to_binary` terminates the string with '\0'
+Terminates string with a '\0'.
 
     void int_to_binary(int x, char *b);
 
 Convert a long to a string of 0 or 1 characters
 `b` must be at least 65 characters long
-`long_to_binary` terminates the string with '\0'
+Terminates string with a '\0'.
 
     void long_to_binary(long x, char *b);
 
@@ -111,24 +111,24 @@ Make a path same as mkdir -p $dir_path
 License
 =======
 
- Copyright (c) 2012, Isaac Turner
- All rights reserved.
+    Copyright (c) 2012, Isaac Turner
+    All rights reserved.
 
- Redistribution and use in source and binary forms, with or without
- modification, are permitted provided that the following conditions are met:
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are met:
     * Redistributions of source code must retain the above copyright
       notice, this list of conditions and the following disclaimer.
 
- THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
- DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+    ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+    WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+    DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+    DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+    (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+    LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+    ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 Development
 ===========
