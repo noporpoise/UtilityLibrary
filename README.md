@@ -21,7 +21,8 @@ To build the test code:
 
 To use in your code, include the following arguments in your gcc command:
 
-    gcc ... -I$UTIL_PATH -L$UTIL_PAH ... -libutil
+    UTIL_PATH = PATH/TO/utility_lib/
+    gcc ... -I$UTIL_PATH -L$UTIL_PATH ... -libutil
 
 and include in your source code:
 
@@ -46,25 +47,33 @@ Returns 1 if whole string is int, 0 otherwise
     char parse_entire_longlong(const char *str, long long *result);
     char parse_entire_ulonglong(const char *str, unsigned long long *result);
 
-Sort comparison function on int
+Sort comparison functions
 
     int cmp_int(const void *aa, const void *bb);
     int cmp_uint(const void *aa, const void *bb);
     int cmp_long(const void *aa, const void *bb);
     int cmp_ulong(const void *aa, const void *bb);
 
+Rounding up
+
     int           round_up_int(int num, int nearest);
     unsigned int  round_up_uint(unsigned int num, unsigned int nearest);
     long          round_up_long(long num, long nearest);
     unsigned long round_up_ulong(unsigned long num, unsigned long nearest);
 
+Count the number of digits in a `long`
+
     unsigned int num_of_digits(unsigned long num);
 
-Result must be at least: digits+floor((digits-1)/3)+1
-Where digits = num_of_digits(num)
-The longest length needed is 27 (assuming ulong max is 2^64)
+Format numbers with commas e.g. 1234567 -> 1,234,567. 
+`result` must be at least: `digits+floor((digits-1)/3)+1` chars long,
+where `digits = num_of_digits(num)`.  
+The longest `result` length needed is 27 (assuming ulong max is 2^64). 
+Terminates string with a '\0'.
 
     void format_ulong(unsigned long num, char* result);
+
+Print a formatted `long` to a stream e.g. 1234567 -> 1,234,567
 
     void print_formatted_ulong(FILE *stream, unsigned long num);
 
