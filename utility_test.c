@@ -26,10 +26,26 @@
 
 #include "utility_lib.h"
 
-void _test_mkpath(const char *path, mode_t mode)
+void _test_mkpath_sub(const char *path, mode_t mode)
 {
   printf("mkpath('%s',%i)\n", path, mode);
   printf("  return %i\n", mkpath(path, mode));
+}
+
+void _test_mkpath()
+{
+  _test_mkpath_sub(".", 0777);
+  _test_mkpath_sub("./", 0777);
+  _test_mkpath_sub("..", 0777);
+  _test_mkpath_sub("../", 0777);
+  _test_mkpath_sub("../utility_lib", 0777);
+  _test_mkpath_sub("../utility_lib/", 0777);
+  _test_mkpath_sub("../utility_lib/tests/first", 0777);
+  _test_mkpath_sub("../utility_lib/tests/first/", 0777);
+  
+  _test_mkpath_sub("/", 0777);
+  _test_mkpath_sub("/Users/isaac/c/libs/utility_lib/tests/second", 0777);
+  _test_mkpath_sub("/Users/isaac/c/libs/utility_lib/tests/second", 0777);
 }
 
 int main(int argc, char* argv[])
@@ -47,20 +63,10 @@ int main(int argc, char* argv[])
 
   printf("Oh hi!\n");
 
-  /*
-  _test_mkpath(".", 0777);
-  _test_mkpath("./", 0777);
-  _test_mkpath("..", 0777);
-  _test_mkpath("../", 0777);
-  _test_mkpath("../utility_lib", 0777);
-  _test_mkpath("../utility_lib/", 0777);
-  _test_mkpath("../utility_lib/tests/first", 0777);
-  _test_mkpath("../utility_lib/tests/first/", 0777);
-  
-  _test_mkpath("/", 0777);
-  _test_mkpath("/Users/isaac/c/libs/utility_lib/tests/second", 0777);
-  _test_mkpath("/Users/isaac/c/libs/utility_lib/tests/second", 0777);
-  */
+  // Test mkpath
+  _test_mkpath();
+
+  printf("Done.\n");
 
   return EXIT_SUCCESS;
 }
