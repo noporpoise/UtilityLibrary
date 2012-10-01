@@ -1,13 +1,9 @@
 UtilityLib - C Library code for general utility functions
 
-project: utility_lib
-
-url: http://github.com/noporpoise/UtilityLibrary/
-
-author: Isaac Turner <turner.isaac@gmail.com>
-
-license: BSD
-
+project: utility_lib  
+url: http://github.com/noporpoise/UtilityLibrary/  
+author: Isaac Turner <turner.isaac@gmail.com>  
+license: BSD  
 copyright (C) 1-Oct-2012
 
 
@@ -65,9 +61,9 @@ Count the number of digits in a `long`
 
     unsigned int num_of_digits(unsigned long num);
 
-Format numbers with commas e.g. 1234567 -> 1,234,567. 
+Format numbers with commas e.g. 1234567 -> 1,234,567.
 `result` must be at least: `digits+floor((digits-1)/3)+1` chars long,
-where `digits = num_of_digits(num)`.  
+where `digits = num_of_digits(num)`.
 The longest `result` length needed is 27 (assuming ulong max is 2^64). 
 Terminates string with a '\0'.
 
