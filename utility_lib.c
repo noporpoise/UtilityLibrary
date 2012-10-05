@@ -73,7 +73,7 @@ int cmp_switch(void *s, const void *aa, const void *bb)
 void sort_r(void *base, size_t nel, size_t width,
             int (*compar)(const void *, const void *, void *), void *arg)
 {
-  #if (defined _GNU_SOURCE || defined __GNU__)
+  #if (defined _GNU_SOURCE || defined __GNU__ || defined __linux__)
 
     qsort_r(base, nel, width, compar, arg);
 
@@ -89,6 +89,8 @@ void sort_r(void *base, size_t nel, size_t width,
     SortStruct tmp = {arg, compar};
     qsort_s(*base, nel, width, &cmp_switch, &tmp);
 
+  #else
+    #error Cannot detect operating system
   #endif
 }
 
