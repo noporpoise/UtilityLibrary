@@ -8,7 +8,8 @@ else
 	CFLAGS := -O3
 endif
 
-ifeq ($(CC),gcc)
+# Check if using gcc
+ifeq ($(shell $(CC) -v 2>&1 | grep -o gcc | head -1),gcc)
 	CFLAGS := $(CFLAGS) -DCAN_USE_NESTED_FUNCTIONS=1 -fnested-functions
 endif
 
