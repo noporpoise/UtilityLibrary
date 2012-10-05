@@ -58,6 +58,21 @@ int cmp_ulong(const void *aa, const void *bb)
   return (*a < *b) ? -1 : (*a > *b);
 }
 
+#ifdef CAN_USE_NESTED_FUNCTIONS
+
+void sort_r(void *base, size_t nel, size_t width,
+            int (*compar)(const void *, const void *, void *), void *arg)
+{
+  int my_cmp(const void *a, const void *b)
+  {
+    return compar(a, b, arg);
+  }
+
+  qsort(base, nel, width, my_cmp);
+}
+
+#else
+
 typedef struct
 {
   void *arg;
@@ -93,6 +108,8 @@ void sort_r(void *base, size_t nel, size_t width,
     #error Cannot detect operating system
   #endif
 }
+
+#endif
 
 /* Parsing Integers */
 

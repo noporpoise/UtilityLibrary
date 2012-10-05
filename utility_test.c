@@ -59,7 +59,6 @@ int sort_r_cmp(const void *aa, const void *bb, void *arg)
   return (*a <= *p || *b <= *p) ? cmp : -cmp;
 }
 
-
 void _test_sort_r()
 {
   int i;
