@@ -25,7 +25,21 @@
 #define UTILITY_HEADER_SEEN
 
 //
-// Integers
+// Sorting
+//
+
+// Sort comparison function on int
+int cmp_int(const void *aa, const void *bb);
+int cmp_uint(const void *aa, const void *bb);
+int cmp_long(const void *aa, const void *bb);
+int cmp_ulong(const void *aa, const void *bb);
+
+// Wrapper for qsort_r (GNU/BSD) and qsort_s (Windows)
+void sort_r(void *base, size_t nel, size_t width,
+            int (*compar)(const void *, const void *, void *), void *arg);
+
+//
+// Parsing Integers
 //
 
 // parse an int value - exit with some error message if invalid value
@@ -39,16 +53,18 @@ char parse_entire_ulong(const char *str, unsigned long *result);
 char parse_entire_longlong(const char *str, long long *result);
 char parse_entire_ulonglong(const char *str, unsigned long long *result);
 
-// Sort comparison function on int
-int cmp_int(const void *aa, const void *bb);
-int cmp_uint(const void *aa, const void *bb);
-int cmp_long(const void *aa, const void *bb);
-int cmp_ulong(const void *aa, const void *bb);
+//
+// Rounding integers
+//
 
 int           round_up_int(int num, int nearest);
 unsigned int  round_up_uint(unsigned int num, unsigned int nearest);
 long          round_up_long(long num, long nearest);
 unsigned long round_up_ulong(unsigned long num, unsigned long nearest);
+
+//
+// Formating integers
+//
 
 unsigned int num_of_digits(unsigned long num);
 

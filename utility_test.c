@@ -48,6 +48,39 @@ void _test_mkpath()
   _test_mkpath_sub("/Users/isaac/c/libs/utility_lib/tests/second", 0777);
 }
 
+int sort_r_cmp(const void *aa, const void *bb, void *arg)
+{
+  const int *a = aa;
+  const int *b = bb;
+  const int *p = arg;
+
+  int cmp = *a - *b;
+
+  return (*a <= *p || *b <= *p) ? cmp : -cmp;
+}
+
+
+void _test_sort_r()
+{
+  int i;
+  #define LEN 18
+  int arr[LEN] = {1, 5, 28, 4, 3, 2, 10, 20, 18, 25, 21, 29, 34, 35, 14, 100, 27, 19};
+
+  printf("%i", arr[0]);
+  for(i = 0; i < LEN; i++)
+    printf(", %i", arr[i]);
+  printf("\n");
+
+  int p = 20;
+
+  sort_r(arr, LEN, sizeof(int), sort_r_cmp, &p);
+
+  printf("%i", arr[0]);
+  for(i = 0; i < LEN; i++)
+    printf(", %i", arr[i]);
+  printf("\n");
+}
+
 int main(int argc, char* argv[])
 {
   if(argc != 1)
@@ -64,7 +97,10 @@ int main(int argc, char* argv[])
   printf("Oh hi!\n");
 
   // Test mkpath
-  _test_mkpath();
+  //_test_mkpath();
+
+  // Test sort_r
+  _test_sort_r();
 
   printf("Done.\n");
 

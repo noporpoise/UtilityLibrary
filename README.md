@@ -18,7 +18,7 @@ To build the test code:
 To use in your code, include the following arguments in your gcc command:
 
     UTIL_PATH = PATH/TO/utility_lib/
-    gcc ... -I$UTIL_PATH -L$UTIL_PATH ... -libutil
+    gcc ... -I$(UTIL_PATH) -L$(UTIL_PATH) ... -libutil
 
 and include in your source code:
 
@@ -26,6 +26,21 @@ and include in your source code:
 
 Functions
 =========
+
+Sorting
+-------
+
+Sort comparison functions
+
+    int cmp_int(const void *aa, const void *bb);
+    int cmp_uint(const void *aa, const void *bb);
+    int cmp_long(const void *aa, const void *bb);
+    int cmp_ulong(const void *aa, const void *bb);
+
+Wrapper for qsort_r (GNU/BSD) and qsort_s (Windows)
+
+    void sort_r(void *base, size_t nel, size_t width,
+                int (*compar)(const void *, const void *, void *), void *arg);
 
 Integers
 --------
@@ -42,13 +57,6 @@ Returns 1 if whole string is int, 0 otherwise
     char parse_entire_ulong(const char *str, unsigned long *result);
     char parse_entire_longlong(const char *str, long long *result);
     char parse_entire_ulonglong(const char *str, unsigned long long *result);
-
-Sort comparison functions
-
-    int cmp_int(const void *aa, const void *bb);
-    int cmp_uint(const void *aa, const void *bb);
-    int cmp_long(const void *aa, const void *bb);
-    int cmp_ulong(const void *aa, const void *bb);
 
 Rounding up
 

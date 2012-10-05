@@ -32,7 +32,68 @@
 
 #include "utility_lib.h"
 
-/* Utility functions */
+/* qsort comparison methods */
+
+int cmp_int(const void *aa, const void *bb)
+{
+  const int *a = aa, *b = bb;
+  return (*a < *b) ? -1 : (*a > *b);
+}
+
+int cmp_uint(const void *aa, const void *bb)
+{
+  const unsigned int *a = aa, *b = bb;
+  return (*a < *b) ? -1 : (*a > *b);
+}
+
+int cmp_long(const void *aa, const void *bb)
+{
+  const long *a = aa, *b = bb;
+  return (*a < *b) ? -1 : (*a > *b);
+}
+
+int cmp_ulong(const void *aa, const void *bb)
+{
+  const unsigned long *a = aa, *b = bb;
+  return (*a < *b) ? -1 : (*a > *b);
+}
+
+typedef struct
+{
+  void *arg;
+  int (*compar)(const void *, const void *, void *);
+} SortStruct;
+
+int cmp_switch(void *s, const void *aa, const void *bb)
+{
+  SortStruct *ss = (SortStruct*)s;
+  return (ss->compar)(aa, bb, ss->arg);
+}
+
+void sort_r(void *base, size_t nel, size_t width,
+            int (*compar)(const void *, const void *, void *), void *arg)
+{
+  #if (defined _GNU_SOURCE || defined __GNU__)
+
+    qsort_r(base, nel, width, compar, arg);
+
+  #elif (defined __APPLE__ || defined __MACH__ || defined __DARWIN__ || \
+         defined __FREEBSD__ || defined __BSD__ || \
+         defined OpenBSD3_1 || defined OpenBSD3_9)
+  
+    SortStruct tmp = {arg, compar};
+    qsort_r(base, nel, width, &tmp, &cmp_switch);
+  
+  #elif (defined _WIN32 || defined _WIN64 || defined __WINDOWS__)
+  
+    SortStruct tmp = {arg, compar};
+    qsort_s(*base, nel, width, &cmp_switch, &tmp);
+
+  #endif
+}
+
+/* Parsing Integers */
+
 long parse_int(char* value, const char* err)
 {
   // atoi less dependable than newer strtol (it has no error response!)
@@ -49,7 +110,7 @@ long parse_int(char* value, const char* err)
   return num;
 }
 
-/* parse entire integer */
+// parse entire integer
 
 char parse_entire_int(const char *str, int *result)
 {
@@ -159,33 +220,7 @@ char parse_entire_ulonglong(const char *str, unsigned long long *result)
   }
 }
 
-/* qsort comparison methods */
-
-int cmp_int(const void *aa, const void *bb)
-{
-  const int *a = aa, *b = bb;
-  return (*a < *b) ? -1 : (*a > *b);
-}
-
-int cmp_uint(const void *aa, const void *bb)
-{
-  const unsigned int *a = aa, *b = bb;
-  return (*a < *b) ? -1 : (*a > *b);
-}
-
-int cmp_long(const void *aa, const void *bb)
-{
-  const long *a = aa, *b = bb;
-  return (*a < *b) ? -1 : (*a > *b);
-}
-
-int cmp_ulong(const void *aa, const void *bb)
-{
-  const unsigned long *a = aa, *b = bb;
-  return (*a < *b) ? -1 : (*a > *b);
-}
-
-/* rounding */
+/* Rounding Integers */
 
 #define roundup(type,name) type name(type num, type nearest) \
 {\
@@ -197,6 +232,8 @@ roundup(unsigned int, round_up_uint)
 roundup(long,         round_up_long)
 roundup(unsigned long,round_up_ulong)
 
+
+/* Formating Integers */
 
 unsigned int num_of_digits(unsigned long num)
 {
