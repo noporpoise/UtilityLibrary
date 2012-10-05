@@ -10,7 +10,11 @@ endif
 
 # Check if using gcc
 ifeq ($(shell $(CC) -v 2>&1 | grep -o gcc | head -1),gcc)
-	CFLAGS := $(CFLAGS) -DCAN_USE_NESTED_FUNCTIONS=1 -fnested-functions
+	CFLAGS := $(CFLAGS) -DCAN_USE_NESTED_FUNCTIONS=1
+
+	ifeq ($(shell uname),Darwin)
+		CFLAGS := $(CFLAGS) -fnested-functions
+	endif
 endif
 
 CFLAGS := $(CFLAGS) -Wall -Wextra
