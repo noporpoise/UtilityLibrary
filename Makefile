@@ -21,8 +21,9 @@ CFLAGS := $(CFLAGS) -Wall -Wextra
 
 all:
 	$(CC) $(CFLAGS) -o utility_lib.o -c utility_lib.c
-	ar -csru libutil.a utility_lib.o
-	$(CC) $(CFLAGS) -o utility_test utility_test.c utility_lib.o
+	$(CC) $(CFLAGS) -o mem_size.o -c mem_size.c
+	ar -csru libutil.a utility_lib.o mem_size.o
+	$(CC) $(CFLAGS) -o utility_test utility_test.c utility_lib.o mem_size.o
 
 clean:
 	rm -rf utility_lib.o libutil.a utility_test utility_test.dSYM utility_test.greg

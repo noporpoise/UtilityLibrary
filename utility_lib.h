@@ -108,6 +108,16 @@ int stdin_is_ready();
 // Make a path same as mkdir -p $dir_path
 char mkpath(const char *path, mode_t mode);
 
+/**
+ * Returns the size of physical memory (RAM) in bytes.
+ * Author:  David Robert Nadeau
+ * Site:    http://NadeauSoftware.com/
+ * License: Creative Commons Attribution 3.0 Unported License
+ *          http://creativecommons.org/licenses/by/3.0/deed.en_US
+ */
+size_t getMemorySize();
+
+
 // String methods moved to string_buffer
 
 #endif
