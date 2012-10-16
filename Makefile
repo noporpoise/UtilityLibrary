@@ -19,7 +19,7 @@ endif
 
 CFLAGS := $(CFLAGS) -Wall -Wextra
 
-all:
+all: clean
 	$(CC) $(CFLAGS) -o utility_lib.o -c utility_lib.c
 	$(CC) $(CFLAGS) -o mem_size.o -c mem_size.c
 	ar -csru libutil.a utility_lib.o mem_size.o
