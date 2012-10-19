@@ -24,6 +24,9 @@
 #ifndef UTILITY_HEADER_SEEN
 #define UTILITY_HEADER_SEEN
 
+#include <stdlib.h>
+#include <stdio.h>
+
 //
 // Sorting
 //
@@ -63,26 +66,34 @@ long          round_up_long(long num, long nearest);
 unsigned long round_up_ulong(unsigned long num, unsigned long nearest);
 
 //
-// Formating integers
+// Formating numbers
 //
 
 unsigned int num_of_digits(unsigned long num);
 
-// result must be at least: digits+floor((digits-1)/3)+1
-// where digits = num_of_digits(num)
-// The longest length needed is 27 (assuming ulong max is 2^64)
-void format_ulong(unsigned long num, char* result);
+// result must be long enough for result + 1 ('\0'). Max length required is:
+// strlen('18,446,744,073,709,551,615')+1 = 27 bytes
+// returns pointer to result
+char* ulong_to_str(unsigned long num, char* result);
 
-void print_formatted_ulong(FILE *stream, unsigned long num);
+// result must be long enough for result + 1 ('\0'). Max length required is:
+// strlen('-9,223,372,036,854,775,808')+1 = 27 bytes
+char* long_to_str(long num, char* result);
 
-//
-// Data size units
-//
+// result must be long enough for result + 1 ('\0').
+// Max length required is: 26+1+decimals+1 = 28+decimals bytes
+//   strlen('-9,223,372,036,854,775,808') = 27
+//   strlen('.') = 1
+//   +1 for \0
+char* double_to_str(double num, int decimals, char* str);
 
-// result should be at least 8 chars long (including '\0')
-// bytes_to_str adds \0 at end of string
-// ulong_max bytes is 16 EB (Exabytes)
-void bytes_to_str(unsigned long num, char* result);
+// str must be 26 + 3 + 1 + num decimals + 1 = 31+decimals bytes
+// breakdown:
+//   strlen('18,446,744,073,709,551,615') = 26
+//   strlen(' GB') = 3
+//   strlen('.') = 1
+//   +1 for '\0'
+char* bytes_to_str(unsigned long num, int decimals, char* str);
 
 //
 // Binary
