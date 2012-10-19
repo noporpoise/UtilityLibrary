@@ -478,3 +478,17 @@ char mkpath(const char *path, mode_t mode)
 
   return status;
 }
+
+// Returns -1 on failure
+off_t get_file_size(char* filepath)
+{
+  struct stat st;
+
+  if (stat(filepath, &st) == 0)
+      return st.st_size;
+
+  fprintf(stderr, "Error: Cannot determine size of %s: %s\n",
+          filepath, strerror(errno));
+
+  return -1;
+}

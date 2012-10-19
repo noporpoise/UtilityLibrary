@@ -128,6 +128,8 @@ char mkpath(const char *path, mode_t mode);
  */
 size_t getMemorySize();
 
+// Returns -1 on failure
+off_t get_file_size(char* filepath);
 
 // String methods moved to string_buffer
 
