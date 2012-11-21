@@ -27,6 +27,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+void print_trace();
+
 //
 // Sorting
 //
@@ -46,15 +48,21 @@ void sort_r(void *base, size_t nel, size_t width,
 //
 
 // parse an int value - exit with some error message if invalid value
-long parse_int(char* value, const char* err);
+long parse_int(char *str, const char* err);
 
 // Returns 1 if whole string is int, 0 otherwise
-char parse_entire_int(const char *str, int *result);
-char parse_entire_uint(const char *str, unsigned int *result);
-char parse_entire_long(const char *str, long *result);
-char parse_entire_ulong(const char *str, unsigned long *result);
-char parse_entire_longlong(const char *str, long long *result);
-char parse_entire_ulonglong(const char *str, unsigned long long *result);
+char parse_entire_int(char *str, int *result);
+char parse_entire_uint(char *str, unsigned int *result);
+char parse_entire_long(char *str, long *result);
+char parse_entire_ulong(char *str, unsigned long *result);
+char parse_entire_longlong(char *str, long long *result);
+char parse_entire_ulonglong(char *str, unsigned long long *result);
+
+/* Maths */
+
+unsigned long factorial(unsigned int k);
+// nCk
+unsigned long choose(unsigned int n, unsigned int k);
 
 //
 // Rounding integers
@@ -98,6 +106,9 @@ char* bytes_to_str(unsigned long num, int decimals, char* str);
 //
 // Binary
 //
+
+// Generalised 'binary to string' function
+char* binary_to_str(const void *ptr, size_t num_of_bits, char *str);
 
 // Convert an int to a string of 0 or 1 characters
 // b must be at least 33 characters long

@@ -24,13 +24,34 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <inttypes.h>
 #include <ctype.h> // isspace
 #include <limits.h> // UINT_MAX etc.
 #include <errno.h>
 #include <sys/stat.h>
 #include <sys/select.h> // used in stdin_is_ready()
+#include <execinfo.h> // get stack trace
 
 #include "utility_lib.h"
+
+void print_trace()
+{
+  void *array[10];
+  size_t size;
+  char **strings;
+  size_t i;
+
+  size = backtrace(array, 10);
+  strings = backtrace_symbols (array, (int)size);
+
+  printf("Obtained %zd stack frames.\n", size);
+
+  for(i = 0; i < size; i++)
+    printf ("%s\n", strings[i]);
+
+  free(strings);
+}
+
 
 /* qsort comparison methods */
 
@@ -113,16 +134,16 @@ void sort_r(void *base, size_t nel, size_t width,
 
 /* Parsing Integers */
 
-long parse_int(char* value, const char* err)
+long parse_int(char *str, const char* err)
 {
   // atoi less dependable than newer strtol (it has no error response!)
-  char* strtol_last_char_ptr = value;
-  long num = strtol(value, &strtol_last_char_ptr, 10);
+  char* strtol_last_char_ptr = str;
+  long num = strtol(str, &strtol_last_char_ptr, 10);
   
   // If pointer to end of number string hasn't moved -> error
-  if(strtol_last_char_ptr == value)
+  if(strtol_last_char_ptr == str)
   {
-    fprintf(stderr, err, value);
+    fprintf(stderr, err, str);
     exit(-1);
   }
   
@@ -131,11 +152,11 @@ long parse_int(char* value, const char* err)
 
 // parse entire integer
 
-char parse_entire_int(const char *str, int *result)
+char parse_entire_int(char *str, int *result)
 {
   size_t len = strlen(str);
 
-  char *strtol_last_char_ptr = (char*)str;
+  char *strtol_last_char_ptr = str;
   long tmp = strtol(str, &strtol_last_char_ptr, 10);
 
   if(tmp > INT_MAX || tmp < INT_MIN || strtol_last_char_ptr != str+len)
@@ -149,11 +170,11 @@ char parse_entire_int(const char *str, int *result)
   }
 }
 
-char parse_entire_uint(const char *str, unsigned int *result)
+char parse_entire_uint(char *str, unsigned int *result)
 {
   size_t len = strlen(str);
 
-  char *strtol_last_char_ptr = (char*)str;
+  char *strtol_last_char_ptr = str;
   unsigned long tmp = strtoul(str, &strtol_last_char_ptr, 10);
 
   if(tmp > UINT_MAX || strtol_last_char_ptr != str+len)
@@ -167,11 +188,11 @@ char parse_entire_uint(const char *str, unsigned int *result)
   }
 }
 
-char parse_entire_long(const char *str, long *result)
+char parse_entire_long(char *str, long *result)
 {
   size_t len = strlen(str);
 
-  char *strtol_last_char_ptr = (char*)str;
+  char *strtol_last_char_ptr = str;
   long tmp = strtol(str, &strtol_last_char_ptr, 10);
 
   if(strtol_last_char_ptr == str+len)
@@ -185,11 +206,11 @@ char parse_entire_long(const char *str, long *result)
   }
 }
 
-char parse_entire_ulong(const char *str, unsigned long *result)
+char parse_entire_ulong(char *str, unsigned long *result)
 {
   size_t len = strlen(str);
 
-  char *strtol_last_char_ptr = (char*)str;
+  char *strtol_last_char_ptr = str;
   unsigned long tmp = strtoul(str, &strtol_last_char_ptr, 10);
 
   if(strtol_last_char_ptr == str+len)
@@ -203,11 +224,11 @@ char parse_entire_ulong(const char *str, unsigned long *result)
   }
 }
 
-char parse_entire_longlong(const char *str, long long *result)
+char parse_entire_longlong(char *str, long long *result)
 {
   size_t len = strlen(str);
 
-  char *strtol_last_char_ptr = (char*)str;
+  char *strtol_last_char_ptr = str;
   long long tmp = strtoll(str, &strtol_last_char_ptr, 10);
 
   if(strtol_last_char_ptr == str+len)
@@ -221,11 +242,11 @@ char parse_entire_longlong(const char *str, long long *result)
   }
 }
 
-char parse_entire_ulonglong(const char *str, unsigned long long *result)
+char parse_entire_ulonglong(char *str, unsigned long long *result)
 {
   size_t len = strlen(str);
 
-  char *strtol_last_char_ptr = (char*)str;
+  char *strtol_last_char_ptr = str;
   unsigned long long tmp = strtoull(str, &strtol_last_char_ptr, 10);
 
   if(strtol_last_char_ptr == str+len)
@@ -237,6 +258,23 @@ char parse_entire_ulonglong(const char *str, unsigned long long *result)
   {
     return 0;
   }
+}
+
+/* Maths */
+
+unsigned long factorial(unsigned int k)
+{
+  long r = k;
+  for(k--; k > 1; k--)
+  {
+    r *= k;
+  }
+  return r;
+}
+
+unsigned long choose(unsigned int n, unsigned int k)
+{
+  return factorial(n) / (factorial(n-k)*factorial(k));
 }
 
 /* Rounding Integers */
@@ -346,7 +384,7 @@ char* double_to_str(double num, int decimals, char* str)
 char* bytes_to_str(unsigned long num, int decimals, char* str)
 {
   const unsigned int num_unit_sizes = 7;
-  char *units[] = {"B", "KB", "MB", "GB", "TB", "PB", "EB"};
+  const char *units[] = {"B", "KB", "MB", "GB", "TB", "PB", "EB"};
 
   unsigned long unit;
   unsigned long num_cpy = num;
@@ -365,6 +403,21 @@ char* bytes_to_str(unsigned long num, int decimals, char* str)
 }
 
 /* binary */
+
+// Generalised 'binary to string' function
+char* binary_to_str(const void *ptr, size_t num_of_bits, char *str)
+{
+  const uint8_t* d = (const uint8_t*)ptr;
+
+  size_t i;
+  for(i = 0; i < num_of_bits; i++)
+  {
+    uint8_t bit = (d[i/8] >> (i % 8)) & 0x1;
+    str[i] = bit ? '1' : '0';
+  }
+  str[num_of_bits] = '\0';
+  return str;
+}
 
 // Convert an int to a string of 0 or 1 characters
 // b must be at least 33 characters long

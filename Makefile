@@ -17,7 +17,7 @@ ifeq ($(shell $(CC) -v 2>&1 | grep -o gcc | head -1),gcc)
 	endif
 endif
 
-CFLAGS := $(CFLAGS) -Wall -Wextra
+CFLAGS := $(CFLAGS) -Wall -Wextra -Winit-self -Wmissing-include-dirs -Wstrict-aliasing -Wstrict-overflow -Wno-div-by-zero -Wcast-qual -Wcast-align -Wwrite-strings -Wstack-protector
 
 all: clean
 	$(CC) $(CFLAGS) -o utility_lib.o -c utility_lib.c
