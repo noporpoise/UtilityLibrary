@@ -41,7 +41,7 @@ int cmp_ulong(const void *aa, const void *bb);
 
 // Wrapper for qsort_r (GNU/BSD) and qsort_s (Windows)
 void sort_r(void *base, size_t nel, size_t width,
-            int (*compar)(const void *, const void *, void *), void *arg);
+            int (*compar)(const void *a1, const void *a2, void *aarg), void *arg);
 
 //
 // Parsing Integers

@@ -50,13 +50,12 @@ void _test_mkpath()
 
 int sort_r_cmp(const void *aa, const void *bb, void *arg)
 {
-  const int *a = aa;
-  const int *b = bb;
-  const int *p = arg;
-
+  const int *a = aa, *b = bb, *p = arg;
   int cmp = *a - *b;
+  int inv_start = p[0], inv_end = p[1];
+  char norm = (*a < inv_start || *a > inv_end || *b < inv_start || *b > inv_end);
 
-  return (*a <= *p || *b <= *p) ? cmp : -cmp;
+  return norm ? cmp : -cmp;
 }
 
 void _test_sort_r()
@@ -70,9 +69,8 @@ void _test_sort_r()
     printf(", %i", arr[i]);
   printf("\n");
 
-  int p = 20;
-
-  sort_r(arr, LEN, sizeof(int), sort_r_cmp, &p);
+  int p[] = {20, 30};
+  sort_r(arr, LEN, sizeof(int), sort_r_cmp, p);
 
   printf("%i", arr[0]);
   for(i = 0; i < LEN; i++)

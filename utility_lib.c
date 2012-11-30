@@ -82,7 +82,7 @@ int cmp_ulong(const void *aa, const void *bb)
 #ifdef CAN_USE_NESTED_FUNCTIONS
 
 void sort_r(void *base, size_t nel, size_t width,
-            int (*compar)(const void *, const void *, void *), void *arg)
+            int (*compar)(const void *a1, const void *a2, void *aarg), void *arg)
 {
   int my_cmp(const void *a, const void *b)
   {
@@ -97,7 +97,7 @@ void sort_r(void *base, size_t nel, size_t width,
 typedef struct
 {
   void *arg;
-  int (*compar)(const void *, const void *, void *);
+  int (*compar)(const void *a1, const void *a2, void *aarg);
 } SortStruct;
 
 int cmp_switch(void *s, const void *aa, const void *bb)
@@ -107,7 +107,7 @@ int cmp_switch(void *s, const void *aa, const void *bb)
 }
 
 void sort_r(void *base, size_t nel, size_t width,
-            int (*compar)(const void *, const void *, void *), void *arg)
+            int (*compar)(const void *a1, const void *a2, void *aarg), void *arg)
 {
   #if (defined _GNU_SOURCE || defined __GNU__ || defined __linux__)
 
