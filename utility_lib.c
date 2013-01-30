@@ -405,6 +405,8 @@ char* bytes_to_str(unsigned long num, int decimals, char* str)
 /* binary */
 
 // Generalised 'binary to string' function
+// Adds bits to the string in order of lsb to msb
+// e.g. 0b11010 (26 in decimal) would come out as "01011"
 char* binary_to_str(const void *ptr, size_t num_of_bits, char *str)
 {
   const uint8_t* d = (const uint8_t*)ptr;

@@ -18,7 +18,7 @@ ifeq ($(shell $(CC) -v 2>&1 | grep -o gcc | head -1),gcc)
 endif
 
 CFLAGS := $(CFLAGS) -Wall -Wextra -Winit-self -Wmissing-include-dirs \
-          -Wstrict-aliasing -Wstrict-overflow -Wno-div-by-zero -Wcast-qual \
+          -Wstrict-aliasing -Wno-div-by-zero -Wcast-qual \
           -Wcast-align -Wwrite-strings -Wstack-protector
 
 all: clean
