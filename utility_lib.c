@@ -34,6 +34,12 @@
 
 #include "utility_lib.h"
 
+// Assume if not using Clang then using GCC
+// Assumer if we're using GCC then we can use nested loops
+#if !defined(CAN_USE_NESTED_FUNCTIONS) && !defined(__clang__)
+  #define CAN_USE_NESTED_FUNCTIONS 1
+#endif
+
 void print_trace()
 {
   void *array[10];
@@ -79,7 +85,7 @@ int cmp_ulong(const void *aa, const void *bb)
   return (*a < *b) ? -1 : (*a > *b);
 }
 
-#ifdef CAN_USE_NESTED_FUNCTIONS
+#if defined(CAN_USE_NESTED_FUNCTIONS) && CAN_USE_NESTED_FUNCTIONS != 0
 
 void sort_r(void *base, size_t nel, size_t width,
             int (*compar)(const void *a1, const void *a2, void *aarg), void *arg)
