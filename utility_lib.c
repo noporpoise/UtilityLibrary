@@ -40,6 +40,10 @@
   #define CAN_USE_NESTED_FUNCTIONS 1
 #endif
 
+#ifdef CAN_USE_NESTED_FUNCTIONS
+  #define QSORT_WITH_NESTED_FUNCTIONS 1
+#endif
+
 void print_trace()
 {
   void *array[10];
@@ -85,30 +89,30 @@ int cmp_ulong(const void *aa, const void *bb)
   return (*a < *b) ? -1 : (*a > *b);
 }
 
-#if defined(CAN_USE_NESTED_FUNCTIONS) && CAN_USE_NESTED_FUNCTIONS != 0
+#ifdef QSORT_WITH_NESTED_FUNCTIONS
 
 void sort_r(void *base, size_t nel, size_t width,
             int (*compar)(const void *a1, const void *a2, void *aarg), void *arg)
 {
-  int my_cmp(const void *a, const void *b)
+  int nested_cmp(const void *a, const void *b)
   {
     return compar(a, b, arg);
   }
 
-  qsort(base, nel, width, my_cmp);
+  qsort(base, nel, width, nested_cmp);
 }
 
 #else
 
-typedef struct
+struct sort_r_data
 {
   void *arg;
   int (*compar)(const void *a1, const void *a2, void *aarg);
-} SortStruct;
+};
 
-int cmp_switch(void *s, const void *aa, const void *bb)
+int sort_r_arg_swap(void *s, const void *aa, const void *bb)
 {
-  SortStruct *ss = (SortStruct*)s;
+  struct sort_r_data *ss = (struct sort_r_data*)s;
   return (ss->compar)(aa, bb, ss->arg);
 }
 
@@ -122,14 +126,16 @@ void sort_r(void *base, size_t nel, size_t width,
   #elif (defined __APPLE__ || defined __MACH__ || defined __DARWIN__ || \
          defined __FREEBSD__ || defined __BSD__ || \
          defined OpenBSD3_1 || defined OpenBSD3_9)
-  
-    SortStruct tmp = {arg, compar};
-    qsort_r(base, nel, width, &tmp, &cmp_switch);
-  
+
+    struct sort_r_data tmp;
+    tmp.arg = arg;
+    tmp.compar = compar;
+    qsort_r(base, nel, width, &tmp, &sort_r_arg_swap);
+
   #elif (defined _WIN32 || defined _WIN64 || defined __WINDOWS__)
-  
-    SortStruct tmp = {arg, compar};
-    qsort_s(*base, nel, width, &cmp_switch, &tmp);
+
+    struct sort_r_data tmp = {arg, compar};
+    qsort_s(*base, nel, width, &sort_r_arg_swap, &tmp);
 
   #else
     #error Cannot detect operating system
